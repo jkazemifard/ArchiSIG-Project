@@ -1,4 +1,6 @@
 currentDir=`pwd`
+apt-get update
+
 
 ################################################################################
 # Install required Debian packages
@@ -47,6 +49,9 @@ if [ -d $geoserver_dir ]; then
 	echo "Installing Data Extraction service"
 	cd $currentDir
 	cp -r -v files/ExtractData/ $war_dest_dir/
+	
+	# Remove all layergroups because those are buggy in this geoserver version and will conflict when our UI will try to get WMS capabilities
+	rm $geoserver_dir/data/layergroups/*
 	
 	if [ -d $war_dest_dir/ExtractData ]; then
 		ip=`ifconfig|xargs|awk '{print $7}'|sed -e 's/[a-z]*:/''/'`
